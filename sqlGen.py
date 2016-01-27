@@ -142,6 +142,8 @@ if __name__ == "__main__":
 	commonRecordQuery = ""
 	commonRecordQueryFile = config['commonRecordQueryFile']
 
+	splChr = config['splChr']  # for removing special character pattern from attributes
+
 	metaFileList = config['metaFile']['metaFileList']
 	mflTok = metaFileList.split(",")
 	for metafile in mflTok:
