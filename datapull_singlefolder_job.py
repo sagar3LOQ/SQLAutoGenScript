@@ -52,9 +52,15 @@ def dataPullJob1(folderPath, debug=1):
 		print root
 		#print dirs
 		#print files
-		for each in files:
-			if each.endswith('.sh') and each[:-7] in master_list:
-				fileList.append(os.path.join(root, each))
+		if master_list == []:
+			for each in files:
+				if each.endswith('.sh') :
+					fileList.append(os.path.join(root, each))
+		else:
+			for each in files:
+				if each.endswith('.sh') and each[:-7] in master_list:
+					fileList.append(os.path.join(root, each))
+	retcode = 1
 	mnth =1 
 	monthVar1 = getMonthVar()
 	monthVar2 = getMonthVar(monthVar1)
@@ -70,14 +76,14 @@ def dataPullJob1(folderPath, debug=1):
 			while(retcode != 0 and cnt < 10):
 				cnt = cnt + 1
 				retcode = startExe(each, monthVar1, monthVar2, monthVar3, debug)
+				#We want to add logger here in case there is some error (stack trace) than we want only the first line and not
+				#the entire stack trace
 
 				if retcode == 0: 
 					logger.debug('In debug mode')
 				else: 
 					log = retcode.split('\n')[0]
 					logger.info(log)
-				#We want to add logger here in case there is some error (stack trace) than we want only the first line and not
-				#the entire stack trace
 		mnth = mnth + 1
 
 
@@ -85,6 +91,8 @@ def dataPullJob(folderPath, debug=1):
 
 	logger = logging.getLogger(__name__)
 	fileList = ['hello','how','are','khana','khake','jana']
+	print "master list"
+	print master_list
 	mnth =3
         retcode = 1
 	while (mnth < 4):
@@ -113,9 +121,25 @@ def dataPullJob(folderPath, debug=1):
 
 
 if __name__=='__main__':
-	if len(sys.argv) < 2 or len(sys.argv) > 3:
-		print 'Usage: python '+__file__ + ' <folderPath> <overwrite debug (start execution) - 1/0>'
+	if len(sys.argv) < 2 or len(sys.argv) > 4:
+		print 'Usage: python '+__file__ + ' <folderPath> <overwrite debug (start execution) - 1/0> <add "ALL" to execute all files in directory>'
+	elif len(sys.argv) == 4:
+		 
+		
+		if (sys.argv[2] == '0' or sys.argv[2] == '1') and (sys.argv[3].upper() == 'ALL'):
+			master_list = []
+			dataPullJob(sys.argv[1], sys.argv[2])
+		else:
+			print 'Usage: python '+__file__ + ' <folderPath> <overwrite debug (start execution) - 1/0> <add "ALL" to execute all files in directory>'
+
+		
 	elif len(sys.argv) == 3:
-		dataPullJob(sys.argv[1], sys.argv[2])
+		if sys.argv[2] == '0' or sys.argv[2] == '1':
+			dataPullJob(sys.argv[1], sys.argv[2])
+		elif sys.argv[2].upper() == 'ALL':
+			master_list = []
+			dataPullJob(sys.argv[1])
+		else:
+			print 'Usage: python '+__file__ + ' <folderPath> <overwrite debug (start execution) - 1/0> <add "ALL" to execute all files in directory>'
 	else:
 		dataPullJob(sys.argv[1])
