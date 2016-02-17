@@ -44,7 +44,7 @@ def startExe(fileName, monthVar1, monthVar2, monthVar3, debug=1):
 		p = subprocess.Popen(cmd , stdout=subprocess.PIPE, shell=True).wait()
 		return p
 
-def dataPullJob1(folderPath, debug=1):
+def dataPullJob(folderPath, debug=1):
 
 	logger = logging.getLogger(__name__)
 	fileList = []
@@ -87,37 +87,7 @@ def dataPullJob1(folderPath, debug=1):
 		mnth = mnth + 1
 
 
-def dataPullJob(folderPath, debug=1):
 
-	logger = logging.getLogger(__name__)
-	fileList = ['hello','how','are','khana','khake','jana']
-	print "master list"
-	print master_list
-	mnth =3
-        retcode = 1
-	while (mnth < 4):
-		for each in fileList:
-			print each
-			#retcode = startExe(each, monthVar1, monthVar2, monthVar3, debug)
-			cnt = 0
-			while(retcode != 0 and cnt < 10):
-				cnt = cnt + 1
-				#retcode = startExe(each, monthVar1, monthVar2, monthVar3, debug)
-
-				retcode = "Hello this is stack trace\n It is used for \n testing this logger"
-				if cnt==1: retcode = 0
-				if retcode == 0: 
-
-					logger.debug('In debug mode')
-
-					retcode = "Hello this is stack trace\n It is used for \n testing this logger"
-				else: 
-					log = retcode.split('\n')[0]
-					logger.info(log)
-					
-				#We want to add logger here in case there is some error (stack trace) than we want only the first line and not
-				#the entire stack trace
-		mnth = mnth + 1
 
 
 if __name__=='__main__':
